@@ -8,6 +8,8 @@ const WorkoutForm = () => {
         load: "",
         reps: ""
     });
+    const [error, setError] = useState(null);
+    const [emptyFields, setEmptyFields] = useState([]);
 
     const HandleChange = (e) => {
         setData(
@@ -37,10 +39,13 @@ const WorkoutForm = () => {
 
             if(!response.ok){
                 const errorData = await response.json();
+                setError(errorData.message || 'Failed to create workout');
+                setEmptyFields(errorData.emptyFields);
                 throw new Error (errorData.message || 'Failed to create workout');
             }
             const newWorkout = await response.json();
             console.log('Workout created:', newWorkout);
+            setEmptyFields([]);
             setData({
                 title: "",
                 load: "",
@@ -53,6 +58,7 @@ const WorkoutForm = () => {
         } 
         catch (error) {
             console.error('Error creating workout:', error);
+            setError(error.message);
         }
     }
 
@@ -62,13 +68,22 @@ const WorkoutForm = () => {
             <h3>Add a New Workout</h3>
             <label htmlFor="title">Exercise Title:</label>
             <input type = "text" id="title" value={data.title} 
-            onChange = {HandleChange} />
+            onChange = {HandleChange}
+            className = {emptyFields.includes('title') ? 'error' : ''} />
             <label htmlFor="load">Load:</label>
             <input type = "number" id="load" value={data.load} 
-            onChange = {HandleChange} />
+            onChange = {HandleChange}
+            className = {emptyFields.includes('load') ? 'error' : ''} />
             <label htmlFor="reps">Reps:</label>
             <input type = "number" id="reps" value={data.reps} 
-            onChange = {HandleChange} />
+            onChange = {HandleChange}
+            className = {emptyFields.includes('reps') ? 'error' : ''} />
+            {error && <p>{error}</p>}
+            {emptyFields.length > 0 && (
+                <p>
+                    Please fill in the following fields: {emptyFields.join(', ')}
+                </p>
+            )}
             <button type="submit">Add Workout</button>
         </form>
      );
