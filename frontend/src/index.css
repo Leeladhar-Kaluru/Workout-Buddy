@@ -92,3 +92,32 @@ form button{
   color: var(--error);
   border: 1px solid var(--error);
 }
+
+nav {
+  display: flex;
+  justify-content: space-between; /* logo left, links right */
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #282c34;
+}
+
+nav h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #61dafb;
+}
+
+nav .links {
+  display: flex;
+  gap: 1.5rem; /* space between login and signup */
+}
+
+nav a {
+  text-decoration: none;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #61dafb;
+}
