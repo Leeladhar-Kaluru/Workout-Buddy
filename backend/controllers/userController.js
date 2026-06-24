@@ -5,8 +5,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 //signing a token
-const createToken = (id) => {
-    return jwt.sign({id}, process.env.SECRET, { expiresIn: '3d'});
+const createToken = (_id) => {
+    return jwt.sign({_id}, process.env.SECRET, { expiresIn: '3d'});
 }
 
 //login user

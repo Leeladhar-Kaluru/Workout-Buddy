@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useLogin } from "../hooks/useLogin";
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
-    const { dispatch } = useAuthContext();
+    const { login, error, isLoading } = useLogin();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(email, password);
+        await login(email, password);
     }
 
     return (
@@ -21,7 +21,7 @@ const Login = () => {
             <label htmlFor="password">Password : </label>
             <input type="password" id="password" value={password}
                 onChange={(e)=> setPassword(e.target.value)} />
-            <button type="submit">Login</button>
+            <button type="submit" disabled={isLoading}>{isLoading ? "Logging in..." : "Login"}</button>
             {error && <div className="error">{error}</div>}
         </form>
     )

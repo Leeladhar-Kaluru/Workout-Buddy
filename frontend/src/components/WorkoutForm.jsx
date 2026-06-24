@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const WorkoutForm = () => {
     const { dispatch } = useWorkoutsContext();
+    const { user } = useAuthContext();
     const [data, setData] = useState({
         title: "",
         load: "",
@@ -11,17 +13,21 @@ const WorkoutForm = () => {
     const [error, setError] = useState(null);
     const [emptyFields, setEmptyFields] = useState([]);
 
-    const HandleChange = (e) => {
-        setData(
-            {
-                ...data,
-                [e.target.id]: e.target.value
-            }
-        )
-    }
+    const handleChange = (e) => {
+        setData({
+            ...data,
+            [e.target.id]: e.target.value
+        });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!user) {
+            setError("You must be logged in");
+            return;
+        }
+
         try {
             const workout = {
                 title: data.title,
@@ -29,64 +35,80 @@ const WorkoutForm = () => {
                 reps: data.reps
             };
 
-            const response = await fetch('http://localhost:4000/api/workouts', {
-                method: 'POST',
+            const response = await fetch("http://localhost:4000/api/workouts", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${user.token}`
                 },
-                body : JSON.stringify(workout)
+                body: JSON.stringify(workout)
             });
 
-            if(!response.ok){
-                const errorData = await response.json();
-                setError(errorData.message || 'Failed to create workout');
-                setEmptyFields(errorData.emptyFields);
-                throw new Error (errorData.message || 'Failed to create workout');
+            const responseData = await response.json();
+
+            if (!response.ok) {
+                setError(responseData.error || "Failed to create workout");
+                setEmptyFields(responseData.emptyFields || []);
+                return;
             }
-            const newWorkout = await response.json();
-            console.log('Workout created:', newWorkout);
+
+            setError(null);
             setEmptyFields([]);
             setData({
                 title: "",
                 load: "",
                 reps: ""
-            })
+            });
+
             dispatch({
-                type: 'CREATE_WORKOUT',
-                payload: newWorkout
-            })
-        } 
-        catch (error) {
-            console.error('Error creating workout:', error);
+                type: "CREATE_WORKOUT",
+                payload: responseData
+            });
+        } catch (error) {
             setError(error.message);
         }
-    }
+    };
 
-
-    return ( 
+    return (
         <form className="create" onSubmit={handleSubmit}>
             <h3>Add a New Workout</h3>
+
             <label htmlFor="title">Exercise Title:</label>
-            <input type = "text" id="title" value={data.title} 
-            onChange = {HandleChange}
-            className = {emptyFields.includes('title') ? 'error' : ''} />
+            <input
+                type="text"
+                id="title"
+                value={data.title}
+                onChange={handleChange}
+                className={emptyFields.includes("title") ? "error" : ""}
+            />
+
             <label htmlFor="load">Load:</label>
-            <input type = "number" id="load" value={data.load} 
-            onChange = {HandleChange}
-            className = {emptyFields.includes('load') ? 'error' : ''} />
+            <input
+                type="number"
+                id="load"
+                value={data.load}
+                onChange={handleChange}
+                className={emptyFields.includes("load") ? "error" : ""}
+            />
+
             <label htmlFor="reps">Reps:</label>
-            <input type = "number" id="reps" value={data.reps} 
-            onChange = {HandleChange}
-            className = {emptyFields.includes('reps') ? 'error' : ''} />
+            <input
+                type="number"
+                id="reps"
+                value={data.reps}
+                onChange={handleChange}
+                className={emptyFields.includes("reps") ? "error" : ""}
+            />
+
             {error && <p>{error}</p>}
+
             {emptyFields.length > 0 && (
-                <p>
-                    Please fill in the following fields: {emptyFields.join(', ')}
-                </p>
+                <p>Please fill in the following fields: {emptyFields.join(", ")}</p>
             )}
+
             <button type="submit">Add Workout</button>
         </form>
-     );
-}
- 
+    );
+};
+
 export default WorkoutForm;
