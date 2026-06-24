@@ -1,133 +1,381 @@
-/* google font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-/* layout */
 :root {
-  --primary: #1aac83;
-  --error: #e7195a;
+  --primary: #ff7a18;
+  --primary-strong: #ff5c00;
+  --accent: #1d4ed8;
+  --accent-soft: rgba(29, 78, 216, 0.12);
+  --surface: rgba(15, 23, 42, 0.78);
+  --surface-strong: #0f172a;
+  --surface-soft: rgba(255, 255, 255, 0.08);
+  --border: rgba(148, 163, 184, 0.22);
+  --text: #e5eefb;
+  --text-muted: #a6b6cc;
+  --error: #fb7185;
+  --shadow: 0 24px 60px rgba(15, 23, 42, 0.42);
+  --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.2);
 }
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
+
 body {
-  background: #f1f1f1;
   margin: 0;
-  font-family: "Poppins";
-}
-header {
-  background: #fff;
-}
-header .container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-header a {
-  color: #333;
-  text-decoration: none;
-}
-.pages{
-  max-width: 1400px;
-  padding: 20px;
-  margin: 0 auto;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(255, 122, 24, 0.22), transparent 30%),
+    radial-gradient(circle at top right, rgba(29, 78, 216, 0.18), transparent 32%),
+    linear-gradient(180deg, #08111f 0%, #111a2d 45%, #070b14 100%);
+  line-height: 1.5;
 }
 
-/* homepage */
-.home {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 100px;
-}
-.workout-details {
-  background: #fff;
-  border-radius: 4px;
-  margin: 20px auto;
-  padding: 20px;
-  position: relative;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
-}
-.workout-details h4 {
-  margin: 0 0 10px 0;
-  font-size: 1.2em;
-  color: var(--primary);
-}
-.workout-details p {
-  margin: 0;
-  font-size: 0.9em;
-  color: #555;
-}
-.workout-details span {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  background: #f1f1f1;
-  padding: 6px;
-  border-radius: 50%;
-  color: #333;
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(circle at center, black 36%, transparent 90%);
+  opacity: 0.3;
 }
 
-label, input{
-  display: block;
+a {
+  color: inherit;
 }
 
-input{
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+button,
+input,
+textarea,
+select {
+  font: inherit;
 }
 
-form button{
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.error{
-  color: var(--error);
-  border: 1px solid var(--error);
+#root,
+.App {
+  min-height: 100vh;
 }
 
 nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
-  justify-content: space-between; /* logo left, links right */
   align-items: center;
-  padding: 1rem 2rem;
-  background-color: #282c34;
-}
-
-nav h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #61dafb;
-}
-
-nav .links {
-  display: flex;
-  gap: 1.5rem; /* space between login and signup */
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem clamp(1rem, 3vw, 2.25rem);
+  border-bottom: 1px solid var(--border);
+  background: rgba(7, 11, 20, 0.82);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 nav a {
   text-decoration: none;
-  color: white;
-  transition: color 0.3s ease;
 }
 
-nav a:hover {
-  color: #61dafb;
+nav h1 {
+  margin: 0;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+nav .links {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+nav .links > div {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+nav .links span {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+nav .links h2 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+nav .links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--text);
+  background: transparent;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease,
+    color 180ms ease;
+}
+
+nav .links a:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+nav button,
+form button {
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease,
+    opacity 180ms ease;
 }
 
 nav button {
-  background-color: #61dafb;
-  color: #282c34;
-  border: none;
-  padding: 2px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  padding: 0.72rem 1rem;
+  background: linear-gradient(135deg, rgba(255, 122, 24, 0.95), rgba(255, 92, 0, 0.95));
+  box-shadow: 0 12px 24px rgba(255, 92, 0, 0.22);
+}
+
+nav button:hover,
+form button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 28px rgba(255, 92, 0, 0.24);
+}
+
+nav button:disabled,
+form button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+}
+
+.pages {
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: clamp(1.25rem, 3vw, 2rem) 0 3rem;
+}
+
+.home {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(300px, 0.9fr);
+  gap: clamp(1.25rem, 3vw, 2rem);
+  align-items: start;
+}
+
+.home > div:first-child > h1 {
+  margin: 0 0 1rem;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.workouts {
+  display: grid;
+  gap: 1rem;
+}
+
+.workout-details,
+form {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.72));
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(14px);
+}
+
+.workout-details {
+  position: relative;
+  padding: 1.3rem;
+  overflow: hidden;
+}
+
+.workout-details::before {
+  content: '';
+  position: absolute;
+  inset: auto -10% -45% auto;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 122, 24, 0.22), transparent 70%);
+  pointer-events: none;
+}
+
+.workout-details h4 {
+  margin: 0 0 0.75rem;
+  padding-right: 3rem;
+  font-size: 1.15rem;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.workout-details p {
+  margin: 0 0 0.4rem;
+  color: var(--text-muted);
+}
+
+.workout-details p strong {
+  color: #fff;
+}
+
+.workout-details button {
+  margin-top: 0.95rem;
+  padding: 0.8rem 1rem;
+  background: linear-gradient(135deg, rgba(248, 113, 113, 0.95), rgba(239, 68, 68, 0.95));
+  box-shadow: 0 12px 24px rgba(239, 68, 68, 0.2);
+}
+
+form {
+  padding: 1.4rem;
+}
+
+.create,
+.login,
+.signup {
+  position: sticky;
+  top: 6.5rem;
+}
+
+form h2,
+form h3 {
+  margin: 0 0 1rem;
+  color: #fff;
+  letter-spacing: -0.03em;
+}
+
+form h3 {
+  font-size: 1.25rem;
+}
+
+label,
+input {
+  display: block;
+}
+
+label {
+  margin: 0.95rem 0 0.45rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+input {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  color: #fff;
+  background: rgba(7, 11, 20, 0.62);
+  outline: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+input::placeholder {
+  color: rgba(229, 238, 251, 0.38);
+}
+
+input:focus {
+  border-color: rgba(255, 122, 24, 0.62);
+  box-shadow: 0 0 0 4px rgba(255, 122, 24, 0.14);
+  transform: translateY(-1px);
+}
+
+form button {
+  margin-top: 1rem;
+  padding: 0.95rem 1.15rem;
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+}
+
+.error {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  color: #fecdd3;
+  border: 1px solid rgba(251, 113, 133, 0.35);
+  background: rgba(251, 113, 133, 0.1);
+}
+
+.create p,
+.login .error,
+.signup .error,
+.create .error {
+  margin-bottom: 0;
+}
+
+.login,
+.signup,
+.create {
+  width: 100%;
+}
+
+.login,
+.signup {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+@media (max-width: 960px) {
+  .home {
+    grid-template-columns: 1fr;
+  }
+
+  .create,
+  .login,
+  .signup {
+    position: static;
+  }
+
+  .pages {
+    width: min(100% - 1rem, 1200px);
+  }
+}
+
+@media (max-width: 720px) {
+  nav {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  nav .links,
+  nav .links > div {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  nav .links > div:last-child {
+    gap: 0.6rem;
+  }
+
+  nav .links a,
+  nav button {
+    width: 100%;
+  }
+
+  .home > div:first-child > h1 {
+    font-size: 1.85rem;
+  }
+
+  .workout-details,
+  form {
+    border-radius: 20px;
+  }
 }
