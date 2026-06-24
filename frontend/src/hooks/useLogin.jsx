@@ -10,21 +10,28 @@ export const useLogin = () => {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch('api/users/login',{
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({email,password})
-        })
-        const data = await response.json();
-        if(!response.ok){
-            setIsLoading(false);
-            setError(data.error);
-        }
-        if(response.ok){
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/users/login`,{
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify({email,password})
+            })
+
+            const responseText = await response.text();
+            const data = responseText ? JSON.parse(responseText) : {};
+
+            if(!response.ok){
+                setError(data.error || 'Login failed');
+                return;
+            }
+
             localStorage.setItem('user', JSON.stringify(data));
             dispatch({type: 'LOGIN', payload: data});
-            setIsLoading(false);
             setError(null);
+        } catch (error) {
+            setError(error.message || 'Login failed');
+        } finally {
+            setIsLoading(false);
         }
     }
     return { login, error, isLoading };

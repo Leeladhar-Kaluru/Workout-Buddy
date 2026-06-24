@@ -242,6 +242,13 @@ form {
   padding: 0.8rem 1rem;
   background: linear-gradient(135deg, rgba(248, 113, 113, 0.95), rgba(239, 68, 68, 0.95));
   box-shadow: 0 12px 24px rgba(239, 68, 68, 0.2);
+  cursor: pointer;
+}
+
+.workout-details button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 28px rgba(239, 68, 68, 0.24);
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 
 form {

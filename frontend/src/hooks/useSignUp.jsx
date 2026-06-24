@@ -10,26 +10,30 @@ export const useSignUp = () => {
         setIsLoading(true);
         setError(null);
 
-            const response = await fetch('api/users/signup', {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/users/signup`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({email, password})
             })
-            if(!response.ok){
-                const errorData = await response.json();
-                setError(errorData.error);
-                setIsLoading(false);
-            }
-            else{
-                const data = await response.json();
-                //save to the Local Storage
-                localStorage.setItem('user', JSON.stringify(data));
 
-                //as we got the user data and token , we can dispatch the login action to update the context
-                dispatch({type: 'LOGIN', payload: data});
-                setIsLoading(false);
-                setError(null);
+            const responseText = await response.text();
+            const data = responseText ? JSON.parse(responseText) : {};
+
+            if(!response.ok){
+                setError(data.error || 'Sign up failed');
+                return;
             }
+
+            localStorage.setItem('user', JSON.stringify(data));
+
+            dispatch({type: 'LOGIN', payload: data});
+            setError(null);
+        } catch (error) {
+            setError(error.message || 'Sign up failed');
+        } finally {
+            setIsLoading(false);
+        }
     }
     return { signUp, error, isLoading };
 }
