@@ -5,7 +5,7 @@ It lets users create, view, update, and delete workout entries through a React f
 
 ## Live Demo
 
-- **Frontend:** https://workout-buddy-jade.vercel.app/login
+- **Frontend:** https://workout-buddy-jade.vercel.app
 - **Backend API:** https://workout-buddy-1imk.onrender.com
 
 ## Features
